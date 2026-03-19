@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vikram Patel — Web Developer · Kudal</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#F7F5F0;
+  --ink:#0F0E0C;
+  --ink2:#3A3830;
+  --ink3:#8A8678;
+  --rule:#DDD9D0;
+  --accent:#C8502A;
+  --accent2:#2A6EC8;
+  --accent3:#2AC870;
+  --card:#FFFFFF;
+  --serif:'Instrument Serif',serif;
+  --sans:'DM Sans',sans-serif;
+  --mono:'DM Mono',monospace;
+}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);overflow-x:hidden}
+
+/* ── CURSOR ── */
+.cur{width:8px;height:8px;background:var(--accent);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform 0.08s}
+.cur-ring{width:28px;height:28px;border:1px solid rgba(200,80,42,0.4);border-radius:50%;position:fixed;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:all 0.13s ease}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;width:100%;z-index:200;padding:1.4rem 6rem;display:flex;justify-content:space-between;align-items:center;transition:all 0.4s}
+nav.scrolled{background:rgba(247,245,240,0.96);backdrop-filter:blur(16px);border-bottom:1px solid var(--rule);padding:1rem 6rem}
+.nav-logo{font-family:var(--serif);font-size:1.15rem;color:var(--ink);letter-spacing:-0.01em}
+.nav-logo em{color:var(--accent);font-style:italic}
+nav ul{list-style:none;display:flex;gap:2.2rem;align-items:center}
+nav ul a{text-decoration:none;font-size:0.75rem;letter-spacing:0.09em;text-transform:uppercase;color:var(--ink3);font-weight:500;transition:color 0.25s;font-family:var(--mono)}
+nav ul a:hover{color:var(--ink)}
+.nav-cta{background:var(--ink)!important;color:var(--bg)!important;padding:0.5rem 1.3rem!important;letter-spacing:0.06em!important;transition:background 0.25s!important}
+.nav-cta:hover{background:var(--accent)!important;color:white!important}
+
+/* ── HERO ── */
+#hero{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:0 6rem 5rem;position:relative;overflow:hidden;border-bottom:1px solid var(--rule)}
+.hero-noise{position:absolute;inset:0;opacity:0.025;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:200px}
+.hero-rule{position:absolute;left:6rem;top:0;bottom:0;width:1px;background:var(--rule)}
+.hero-number{position:absolute;right:6rem;top:50%;transform:translateY(-50%) rotate(90deg);font-family:var(--mono);font-size:0.65rem;color:var(--ink3);letter-spacing:0.2em;white-space:nowrap}
+.hero-avail{display:inline-flex;align-items:center;gap:0.55rem;margin-bottom:2.5rem;opacity:0;animation:fadeUp 0.8s 0.3s forwards}
+.avail-dot{width:6px;height:6px;background:var(--accent3);border-radius:50%;box-shadow:0 0 0 3px rgba(42,200,112,0.2);animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.4}}
+.avail-text{font-family:var(--mono);font-size:0.65rem;color:var(--ink3);letter-spacing:0.12em;text-transform:uppercase}
+h1.hero-h{font-family:var(--serif);font-size:clamp(3.5rem,9vw,8.5rem);line-height:0.95;letter-spacing:-0.02em;color:var(--ink);opacity:0;animation:fadeUp 0.9s 0.5s forwards;max-width:900px}
+h1.hero-h em{color:var(--accent);font-style:italic}
+.hero-foot{display:flex;align-items:flex-end;justify-content:space-between;margin-top:3rem;opacity:0;animation:fadeUp 0.8s 0.8s forwards;flex-wrap:wrap;gap:2rem}
+.hero-sub{font-size:0.95rem;color:var(--ink2);line-height:1.75;max-width:440px;font-weight:300}
+.hero-sub strong{color:var(--ink);font-weight:500}
+.hero-actions{display:flex;gap:1rem;align-items:center;flex-shrink:0}
+.btn-dark{background:var(--ink);color:var(--bg);padding:0.85rem 2rem;text-decoration:none;font-size:0.78rem;font-weight:500;letter-spacing:0.07em;transition:background 0.25s;font-family:var(--mono)}
+.btn-dark:hover{background:var(--accent)}
+.btn-ghost{color:var(--ink2);padding:0.85rem 0;text-decoration:none;font-size:0.78rem;font-weight:500;letter-spacing:0.07em;border-bottom:1px solid var(--ink3);transition:color 0.25s,border-color 0.25s;font-family:var(--mono)}
+.btn-ghost:hover{color:var(--accent);border-color:var(--accent)}
+.hero-stats{display:flex;gap:3rem;opacity:0;animation:fadeUp 0.8s 1s forwards;padding-top:2rem;border-top:1px solid var(--rule);width:100%}
+.hs{text-align:left}
+.hs-n{font-family:var(--serif);font-size:2.2rem;color:var(--ink);line-height:1}
+.hs-l{font-family:var(--mono);font-size:0.6rem;color:var(--ink3);letter-spacing:0.12em;text-transform:uppercase;margin-top:0.3rem}
+
+/* ── ABOUT ── */
+#about{padding:7rem 6rem;display:grid;grid-template-columns:1fr 1fr;gap:8rem;align-items:center;border-bottom:1px solid var(--rule)}
+.about-label{font-family:var(--mono);font-size:0.62rem;color:var(--accent);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:1.5rem}
+.about-h{font-family:var(--serif);font-size:clamp(2rem,3vw,3.2rem);line-height:1.1;letter-spacing:-0.02em;color:var(--ink)}
+.about-h em{color:var(--accent);font-style:italic}
+.about-p{font-size:0.9rem;color:var(--ink2);line-height:1.85;font-weight:300;margin-top:1.2rem}
+.about-skills{display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:2rem}
+.sk{font-family:var(--mono);font-size:0.68rem;padding:0.4rem 0.9rem;border:1px solid var(--rule);color:var(--ink2);transition:all 0.2s;letter-spacing:0.04em;cursor:default}
+.sk:hover{border-color:var(--accent);color:var(--accent);background:rgba(200,80,42,0.04)}
+.about-right{position:relative}
+.about-img-wrap{background:var(--ink);aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:7rem;position:relative;overflow:hidden}
+.about-img-wrap::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(200,80,42,0.15),transparent)}
+.about-badge-tl{position:absolute;top:-1px;left:-1px;background:var(--accent);color:white;font-family:var(--mono);font-size:0.6rem;padding:0.4rem 0.8rem;letter-spacing:0.06em;text-transform:uppercase}
+.about-badge-br{position:absolute;bottom:-1px;right:-1px;background:var(--bg);border:1px solid var(--rule);padding:1rem 1.2rem;text-align:right}
+.ab-num{font-family:var(--serif);font-size:1.8rem;color:var(--ink);line-height:1}
+.ab-txt{font-family:var(--mono);font-size:0.58rem;color:var(--ink3);letter-spacing:0.08em;text-transform:uppercase}
+
+/* ── PROJECTS ── */
+#projects{padding:7rem 6rem;border-bottom:1px solid var(--rule)}
+.sec-hd{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:4rem;gap:2rem;flex-wrap:wrap}
+.sec-label-mono{font-family:var(--mono);font-size:0.62rem;color:var(--ink3);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:0.7rem}
+.sec-title-serif{font-family:var(--serif);font-size:clamp(2rem,3.5vw,3.5rem);line-height:1;letter-spacing:-0.02em;color:var(--ink)}
+.sec-title-serif em{color:var(--accent);font-style:italic}
+.proj-count{font-family:var(--mono);font-size:0.7rem;color:var(--ink3)}
+.projects-list{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--rule)}
+.proj-item{background:var(--bg);padding:2.5rem;transition:background 0.25s;position:relative;overflow:hidden}
+.proj-item:hover{background:var(--card)}
+.proj-item::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--accent);transform:scaleX(0);transition:transform 0.3s;transform-origin:left}
+.proj-item:hover::after{transform:scaleX(1)}
+.proj-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.2rem}
+.proj-cat{font-family:var(--mono);font-size:0.6rem;color:var(--accent);letter-spacing:0.15em;text-transform:uppercase}
+.proj-emoji{font-size:1.8rem}
+.proj-name{font-family:var(--serif);font-size:1.5rem;color:var(--ink);letter-spacing:-0.01em;margin-bottom:0.5rem}
+.proj-desc{font-size:0.82rem;color:var(--ink2);line-height:1.65;font-weight:300}
+.proj-tags{display:flex;flex-wrap:wrap;gap:0.35rem;margin-top:1rem}
+.ptag{font-family:var(--mono);font-size:0.6rem;padding:0.2rem 0.6rem;border:1px solid var(--rule);color:var(--ink3)}
+.proj-foot{display:flex;align-items:center;justify-content:space-between;margin-top:1.5rem}
+.proj-status{display:flex;align-items:center;gap:0.4rem;font-family:var(--mono);font-size:0.62rem;color:var(--accent3)}
+.proj-status::before{content:'';width:5px;height:5px;background:var(--accent3);border-radius:50%}
+.proj-link{font-family:var(--mono);font-size:0.68rem;color:var(--ink2);text-decoration:none;border-bottom:1px solid var(--rule);padding-bottom:1px;transition:color 0.2s,border-color 0.2s}
+.proj-link:hover{color:var(--accent);border-color:var(--accent)}
+
+/* ── SERVICES ── */
+#services{padding:7rem 6rem;background:var(--ink);color:var(--bg);border-bottom:1px solid #1F1E1C}
+#services .sec-title-serif{color:var(--bg)}
+#services .sec-title-serif em{color:#E88A6A}
+#services .sec-label-mono{color:rgba(247,245,240,0.35)}
+.svcs-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,0.07);margin-top:0}
+.svc{background:var(--ink);padding:2.5rem;position:relative;overflow:hidden;transition:background 0.25s}
+.svc:hover{background:#1A1917}
+.svc-num{font-family:var(--mono);font-size:0.6rem;color:rgba(247,245,240,0.2);letter-spacing:0.15em;margin-bottom:1.5rem}
+.svc-icon{font-size:2rem;margin-bottom:1.2rem;display:block}
+.svc-name{font-family:var(--serif);font-size:1.1rem;color:var(--bg);letter-spacing:-0.01em;margin-bottom:0.6rem}
+.svc-desc{font-size:0.82rem;color:rgba(247,245,240,0.45);line-height:1.65;font-weight:300}
+.svc-price{font-family:var(--mono);font-size:0.72rem;color:#E88A6A;margin-top:1.2rem;letter-spacing:0.04em}
+
+/* ── PRICING ── */
+#pricing{padding:7rem 6rem;border-bottom:1px solid var(--rule)}
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--rule);margin-top:4rem}
+.price-card{background:var(--bg);padding:2.5rem;position:relative;transition:background 0.25s}
+.price-card:hover{background:var(--card)}
+.price-card.featured{background:var(--ink);color:var(--bg)}
+.featured-pill{position:absolute;top:2rem;right:2rem;background:var(--accent);color:white;font-family:var(--mono);font-size:0.55rem;padding:0.25rem 0.7rem;letter-spacing:0.1em;text-transform:uppercase}
+.price-tier{font-family:var(--mono);font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--ink3);margin-bottom:1rem}
+.price-card.featured .price-tier{color:rgba(247,245,240,0.4)}
+.price-val{font-family:var(--serif);font-size:3rem;line-height:1;letter-spacing:-0.02em;color:var(--ink);margin-bottom:0.3rem}
+.price-card.featured .price-val{color:var(--bg)}
+.price-val span{font-size:1rem;font-family:var(--sans);color:var(--ink3);font-weight:300}
+.price-card.featured .price-val span{color:rgba(247,245,240,0.35)}
+.price-sub{font-size:0.78rem;color:var(--ink3);margin-bottom:2rem;font-weight:300}
+.price-card.featured .price-sub{color:rgba(247,245,240,0.4)}
+.pfs{display:flex;flex-direction:column;gap:0.65rem;margin-bottom:2rem}
+.pf{font-size:0.8rem;color:var(--ink2);display:flex;align-items:center;gap:0.6rem}
+.price-card.featured .pf{color:rgba(247,245,240,0.7)}
+.pf::before{content:'—';color:var(--accent);font-family:var(--mono);flex-shrink:0}
+.btn-price{width:100%;padding:0.85rem;font-size:0.72rem;font-weight:600;letter-spacing:0.1em;cursor:pointer;font-family:var(--mono);transition:all 0.25s;border:none;text-transform:uppercase}
+.btn-inv{background:var(--ink);color:var(--bg)}
+.btn-inv:hover{background:var(--accent)}
+.btn-light{background:var(--bg);color:var(--ink)}
+.btn-light:hover{background:var(--accent);color:white}
+
+/* ── CONTACT ── */
+#contact{padding:7rem 6rem;display:grid;grid-template-columns:1fr 1fr;gap:8rem;align-items:start;border-bottom:1px solid var(--rule)}
+.con-h{font-family:var(--serif);font-size:clamp(2rem,3.5vw,3.8rem);line-height:1;letter-spacing:-0.02em;color:var(--ink);margin-top:0.5rem}
+.con-h em{color:var(--accent);font-style:italic}
+.con-p{font-size:0.88rem;color:var(--ink2);line-height:1.75;font-weight:300;margin-top:1.2rem;margin-bottom:2.5rem}
+.con-links{display:flex;flex-direction:column;gap:0.8rem}
+.con-link{display:flex;align-items:center;gap:1rem;padding:1rem 1.2rem;border:1px solid var(--rule);text-decoration:none;transition:all 0.2s;background:var(--card)}
+.con-link:hover{border-color:var(--accent);transform:translateX(4px)}
+.cl-icon{width:36px;height:36px;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:0.9rem;flex-shrink:0;border:1px solid var(--rule)}
+.cl-label{font-family:var(--mono);font-size:0.58rem;color:var(--ink3);text-transform:uppercase;letter-spacing:0.1em}
+.cl-val{font-size:0.85rem;color:var(--ink);font-weight:500;margin-top:0.1rem}
+.con-form{border:1px solid var(--rule);padding:2.5rem;background:var(--card)}
+.cf-title{font-family:var(--serif);font-size:1.5rem;color:var(--ink);letter-spacing:-0.01em;margin-bottom:2rem}
+.cfg{display:flex;flex-direction:column;gap:0.4rem;margin-bottom:1rem}
+.cfg label{font-family:var(--mono);font-size:0.6rem;color:var(--ink3);text-transform:uppercase;letter-spacing:0.12em}
+.cfg input,.cfg select,.cfg textarea{background:var(--bg);border:1px solid var(--rule);padding:0.75rem 0.9rem;font-size:0.85rem;color:var(--ink);font-family:var(--sans);outline:none;transition:border-color 0.25s;border-radius:0}
+.cfg input:focus,.cfg select:focus,.cfg textarea:focus{border-color:var(--accent)}
+.cfg input::placeholder,.cfg textarea::placeholder{color:var(--ink3);font-weight:300}
+.cfg select option{background:var(--bg)}
+.cfg textarea{resize:vertical;min-height:90px}
+.cf2{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.cf-btn{width:100%;background:var(--ink);color:var(--bg);border:none;padding:1rem;font-size:0.75rem;font-weight:600;letter-spacing:0.1em;cursor:pointer;font-family:var(--mono);transition:background 0.25s;text-transform:uppercase}
+.cf-btn:hover{background:var(--accent)}
+
+/* ── FOOTER ── */
+footer{padding:2.5rem 6rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1.5rem}
+.ft-logo{font-family:var(--serif);font-size:1.1rem;color:var(--ink)}
+.ft-logo em{color:var(--accent);font-style:italic}
+.ft-links{display:flex;gap:2rem}
+.ft-links a{font-family:var(--mono);font-size:0.65rem;color:var(--ink3);text-decoration:none;letter-spacing:0.08em;transition:color 0.2s;text-transform:uppercase}
+.ft-links a:hover{color:var(--ink)}
+.ft-copy{font-family:var(--mono);font-size:0.62rem;color:var(--ink3);letter-spacing:0.06em}
+
+/* ── WA FLOAT ── */
+.wa{position:fixed;bottom:1.8rem;right:1.8rem;z-index:300;width:50px;height:50px;background:#25D366;display:flex;align-items:center;justify-content:center;font-size:1.3rem;text-decoration:none;box-shadow:0 4px 20px rgba(37,211,102,0.35);transition:transform 0.25s}
+.wa:hover{transform:scale(1.1)}
+.wa-tip{position:absolute;right:58px;background:var(--ink);color:var(--bg);padding:0.4rem 0.8rem;font-family:var(--mono);font-size:0.62rem;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity 0.25s;letter-spacing:0.06em}
+.wa:hover .wa-tip{opacity:1}
+
+/* ── REVEAL ── */
+.reveal{opacity:0;transform:translateY(20px);transition:opacity 0.7s,transform 0.7s}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-l{opacity:0;transform:translateX(-20px);transition:opacity 0.7s,transform 0.7s}
+.reveal-l.visible{opacity:1;transform:translateX(0)}
+.reveal-r{opacity:0;transform:translateX(20px);transition:opacity 0.7s,transform 0.7s}
+.reveal-r.visible{opacity:1;transform:translateX(0)}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── RESPONSIVE ── */
+@media(max-width:960px){
+  nav{padding:1.1rem 2rem}nav.scrolled{padding:0.9rem 2rem}nav ul{display:none}
+  #hero{padding:0 2rem 4rem}
+  .hero-rule{left:2rem}.hero-number{right:2rem}
+  #about,#contact{grid-template-columns:1fr;gap:3.5rem;padding:4.5rem 2rem}
+  #projects,#services,#pricing{padding:4.5rem 2rem}
+  .projects-list{grid-template-columns:1fr}
+  .svcs-grid{grid-template-columns:1fr 1fr}
+  .pricing-grid{grid-template-columns:1fr}
+  .ft-links{display:none}
+  footer{padding:2rem}
+  .hero-stats{gap:2rem;flex-wrap:wrap}
+  .sec-hd{flex-direction:column}
+}
+@media(max-width:540px){
+  h1.hero-h{font-size:clamp(2.8rem,12vw,5rem)}
+  .hero-foot{flex-direction:column;align-items:flex-start}
+  .svcs-grid{grid-template-columns:1fr}
+  .cf2{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- CURSOR -->
+<div class="cur" id="cursor"></div>
+<div class="cur-ring" id="ring"></div>
+
+<!-- WA -->
+<a class="wa" href="https://wa.me/919404830921?text=Hi%20Vikram!%20I%20saw%20your%20portfolio%20and%20I'd%20like%20to%20discuss%20a%20website%20project." target="_blank">
+  <div class="wa-tip">Let's Talk 💬</div>💬
+</a>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="nav-logo">vikram<em>.dev</em></div>
+  <ul>
+    <li><a href="#about">About</a></li>
+    <li><a href="#projects">Work</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="https://wa.me/919404830921" target="_blank" class="nav-cta">Hire Me</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-noise"></div>
+  <div class="hero-rule"></div>
+  <div class="hero-number">VIKRAM PATEL — WEB DEVELOPER — KUDAL</div>
+
+  <div class="hero-avail">
+    <div class="avail-dot"></div>
+    <span class="avail-text">Available for new projects</span>
+  </div>
+  <h1 class="hero-h">Vikram<br><em>Patel.</em><br>Web Dev.</h1>
+  <div class="hero-foot">
+    <p class="hero-sub">I build <strong>beautiful websites</strong> for local businesses — hotels, cafes, clinics, shops and more. Professional quality, fast delivery, <strong>affordable prices.</strong></p>
+    <div class="hero-actions">
+      <a href="#projects" class="btn-dark">View Work →</a>
+      <a href="#contact" class="btn-ghost">Let's Talk</a>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div class="hs"><div class="hs-n">10+</div><div class="hs-l">Websites Built</div></div>
+    <div class="hs"><div class="hs-n">5</div><div class="hs-l">Happy Clients</div></div>
+    <div class="hs"><div class="hs-n">5 Days</div><div class="hs-l">Avg. Delivery</div></div>
+    <div class="hs"><div class="hs-n">₹6K</div><div class="hs-l">Starting Price</div></div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="reveal-l">
+    <div class="about-label">About Me</div>
+    <h2 class="about-h">Building the Web,<br><em>One Site at a Time</em></h2>
+    <p class="about-p">Hi! I'm Vikram Patel, a passionate web developer based in Kudal, Sindhudurg. I specialise in building beautiful, functional websites for local businesses that help them grow online — attract more customers, generate leads, and stand out.</p>
+    <p class="about-p">Every website I build is custom designed, mobile-friendly, fast loading, and includes WhatsApp integration so your customers can reach you instantly.</p>
+    <div class="about-skills">
+      <span class="sk">HTML / CSS</span>
+      <span class="sk">JavaScript</span>
+      <span class="sk">Responsive Design</span>
+      <span class="sk">WhatsApp Integration</span>
+      <span class="sk">SEO Basics</span>
+      <span class="sk">Website Hosting</span>
+      <span class="sk">UI / UX Design</span>
+      <span class="sk">Domain Setup</span>
+      <span class="sk">Website Maintenance</span>
+      <span class="sk">React</span>
+    </div>
+  </div>
+  <div class="about-right reveal-r">
+    <div class="about-img-wrap">
+      <div class="about-badge-tl">Web Developer</div>
+      👨‍💻
+      <div class="about-badge-br">
+        <div class="ab-num">100%</div>
+        <div class="ab-txt">Client<br>Satisfaction</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="sec-hd reveal">
+    <div>
+      <div class="sec-label-mono">My Work</div>
+      <h2 class="sec-title-serif">Recent <em>Projects</em></h2>
+    </div>
+    <div class="proj-count">06 projects</div>
+  </div>
+  <div class="projects-list">
+
+    <div class="proj-item reveal">
+      <div class="proj-meta">
+        <div class="proj-cat">Hospitality</div>
+        <div class="proj-emoji">🌿</div>
+      </div>
+      <div class="proj-name">Hotel Lemongrass</div>
+      <div class="proj-desc">Star class luxury hotel on the Konkan coast. Full booking system, restaurant menu, photo gallery & WhatsApp integration.</div>
+      <div class="proj-tags"><span class="ptag">Hotel</span><span class="ptag">Booking</span><span class="ptag">WhatsApp</span><span class="ptag">Gallery</span></div>
+      <div class="proj-foot">
+        <div class="proj-status">Live Website</div>
+        <a href="https://github.com/raxx21/rajesh-portfolio" target="_blank" class="proj-link">View Project →</a>
+      </div>
+    </div>
+
+    <div class="proj-item reveal">
+      <div class="proj-meta">
+        <div class="proj-cat">Food & Beverage</div>
+        <div class="proj-emoji">☕</div>
+      </div>
+      <div class="proj-name">Cake N Bake Cafe</div>
+      <div class="proj-desc">Complete cafe website with full menu, WhatsApp ordering for 50+ items, specials section & order form.</div>
+      <div class="proj-tags"><span class="ptag">Cafe</span><span class="ptag">Menu</span><span class="ptag">Orders</span></div>
+      <div class="proj-foot">
+        <div class="proj-status">Live Website</div>
+        <a href="https://github.com/raxx21/rajesh-portfolio" target="_blank" class="proj-link">View Project →</a>
+      </div>
+    </div>
+
+    <div class="proj-item reveal">
+      <div class="proj-meta">
+        <div class="proj-cat">Hospitality</div>
+        <div class="proj-emoji">🪔</div>
+      </div>
+      <div class="proj-name">Hotel Kulswamini</div>
+      <div class="proj-desc">Budget luxury hotel in Kudal city centre. Room booking, amenities showcase, location map & guest reviews.</div>
+      <div class="proj-tags"><span class="ptag">Hotel</span><span class="ptag">Booking</span><span class="ptag">Reviews</span></div>
+      <div class="proj-foot">
+        <div class="proj-status">Live Website</div>
+        <a href="https://github.com/raxx21/rajesh-portfolio" target="_blank" class="proj-link">View Project →</a>
+      </div>
+    </div>
+
+    <div class="proj-item reveal">
+      <div class="proj-meta">
+        <div class="proj-cat">Hospitality</div>
+        <div class="proj-emoji">🥥</div>
+      </div>
+      <div class="proj-name">Hotel Coconut</div>
+      <div class="proj-desc">Kudal's #1 business hotel. Rooms, restaurant, rooftop bar, amenities & live availability booking system.</div>
+      <div class="proj-tags"><span class="ptag">Hotel</span><span class="ptag">Restaurant</span><span class="ptag">Bar</span></div>
+      <div class="proj-foot">
+        <div class="proj-status">Live Website</div>
+        <a href="https://github.com/raxx21/rajesh-portfolio" target="_blank" class="proj-link">View Project →</a>
+      </div>
+    </div>
+
+    <div class="proj-item reveal">
+      <div class="proj-meta">
+        <div class="proj-cat">Healthcare</div>
+        <div class="proj-emoji">🦷</div>
+      </div>
+      <div class="proj-name">PureSmile Dental</div>
+      <div class="proj-desc">Modern dental clinic website with services, doctor profiles, appointment booking & patient testimonials.</div>
+      <div class="proj-tags"><span class="ptag">Clinic</span><span class="ptag">Appointments</span><span class="ptag">Doctors</span></div>
+      <div class="proj-foot">
+        <div class="proj-status">Live Website</div>
+        <a href="https://github.com/raxx21/rajesh-portfolio" target="_blank" class="proj-link">View Project →</a>
+      </div>
+    </div>
+
+    <div class="proj-item reveal">
+      <div class="proj-meta">
+        <div class="proj-cat">Retail</div>
+        <div class="proj-emoji">🎁</div>
+      </div>
+      <div class="proj-name">Maison Gifts Shop</div>
+      <div class="proj-desc">Luxury gift & home decor shop with product catalog, categories, photo gallery & WhatsApp ordering.</div>
+      <div class="proj-tags"><span class="ptag">Ecommerce</span><span class="ptag">Products</span><span class="ptag">Orders</span></div>
+      <div class="proj-foot">
+        <div class="proj-status">Live Website</div>
+        <a href="https://github.com/raxx21/rajesh-portfolio" target="_blank" class="proj-link">View Project →</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="sec-hd reveal">
+    <div>
+      <div class="sec-label-mono" style="color:rgba(247,245,240,0.35)">What I Offer</div>
+      <h2 class="sec-title-serif" style="color:var(--bg)">My <em style="color:#E88A6A">Services</em></h2>
+    </div>
+  </div>
+  <div class="svcs-grid">
+    <div class="svc reveal">
+      <div class="svc-num">01</div>
+      <span class="svc-icon">🌐</span>
+      <div class="svc-name">Website Design & Development</div>
+      <div class="svc-desc">Custom built websites tailored to your business. Mobile friendly, fast loading, and professionally designed.</div>
+      <div class="svc-price">Starting from ₹6,000</div>
+    </div>
+    <div class="svc reveal">
+      <div class="svc-num">02</div>
+      <span class="svc-icon">📱</span>
+      <div class="svc-name">WhatsApp Integration</div>
+      <div class="svc-desc">Connect your website to WhatsApp so customers can order or book directly with one click.</div>
+      <div class="svc-price">Included in all packages</div>
+    </div>
+    <div class="svc reveal">
+      <div class="svc-num">03</div>
+      <span class="svc-icon">🌍</span>
+      <div class="svc-name">Domain & Hosting Setup</div>
+      <div class="svc-desc">Get your own .in or .com domain and publish your website so it's live 24/7 on the internet.</div>
+      <div class="svc-price">₹999/year domain only</div>
+    </div>
+    <div class="svc reveal">
+      <div class="svc-num">04</div>
+      <span class="svc-icon">🛠️</span>
+      <div class="svc-name">Monthly Maintenance</div>
+      <div class="svc-desc">Update prices, add new items, fix issues, and keep your website fresh and running smoothly.</div>
+      <div class="svc-price">₹1,500/month</div>
+    </div>
+    <div class="svc reveal">
+      <div class="svc-num">05</div>
+      <span class="svc-icon">📍</span>
+      <div class="svc-name">Google Maps Setup</div>
+      <div class="svc-desc">Add your business to Google Maps with photos, hours and location so customers find you easily.</div>
+      <div class="svc-price">₹500 one-time</div>
+    </div>
+    <div class="svc reveal">
+      <div class="svc-num">06</div>
+      <span class="svc-icon">📸</span>
+      <div class="svc-name">Social Media Setup</div>
+      <div class="svc-desc">Create or redesign your Instagram & Facebook business pages to match your website's branding.</div>
+      <div class="svc-price">₹2,000 one-time</div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="sec-hd reveal">
+    <div>
+      <div class="sec-label-mono">Transparent Pricing</div>
+      <h2 class="sec-title-serif">Simple <em>Packages</em></h2>
+    </div>
+  </div>
+  <div class="pricing-grid">
+
+    <div class="price-card reveal">
+      <div class="price-tier">Basic</div>
+      <div class="price-val">₹6,000 <span>one-time</span></div>
+      <div class="price-sub">Perfect for small shops & startups</div>
+      <div class="pfs">
+        <div class="pf">5 page website</div>
+        <div class="pf">Mobile responsive</div>
+        <div class="pf">WhatsApp button</div>
+        <div class="pf">Contact form</div>
+        <div class="pf">Basic SEO</div>
+      </div>
+      <button class="btn-price btn-inv" onclick="enquire('Basic Package — ₹6,000')">GET STARTED</button>
+    </div>
+
+    <div class="price-card featured reveal">
+      <div class="featured-pill">Most Popular</div>
+      <div class="price-tier">Standard</div>
+      <div class="price-val">₹9,000 <span>one-time</span></div>
+      <div class="price-sub">Best for restaurants & cafes</div>
+      <div class="pfs">
+        <div class="pf">8 sections website</div>
+        <div class="pf">Full menu / services</div>
+        <div class="pf">WhatsApp ordering</div>
+        <div class="pf">Photo gallery</div>
+        <div class="pf">Animations & effects</div>
+        <div class="pf">1 month free support</div>
+      </div>
+      <button class="btn-price btn-light" onclick="enquire('Standard Package — ₹9,000')">GET STARTED →</button>
+    </div>
+
+    <div class="price-card reveal">
+      <div class="price-tier">Premium</div>
+      <div class="price-val">₹14,000 <span>one-time</span></div>
+      <div class="price-sub">For hotels, clinics & big businesses</div>
+      <div class="pfs">
+        <div class="pf">10+ sections website</div>
+        <div class="pf">Booking / Order form</div>
+        <div class="pf">Gallery with lightbox</div>
+        <div class="pf">Google Maps embed</div>
+        <div class="pf">Testimonials section</div>
+        <div class="pf">2 months free support</div>
+      </div>
+      <button class="btn-price btn-inv" onclick="enquire('Premium Package — ₹14,000')">GET STARTED</button>
+    </div>
+
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="reveal-l">
+    <div class="about-label">Get In Touch</div>
+    <h2 class="con-h">Let's Build<br><em>Something Great</em></h2>
+    <p class="con-p">Have a business that needs a website? I'd love to help! Reach out on WhatsApp or fill the form — I'll respond within 2 hours.</p>
+    <div class="con-links">
+      <a href="https://wa.me/919404830921" target="_blank" class="con-link">
+        <div class="cl-icon">💬</div>
+        <div><div class="cl-label">WhatsApp</div><div class="cl-val">+91 9404830921</div></div>
+      </a>
+      <a href="https://github.com/raxx21/rajesh-portfolio" target="_blank" class="con-link">
+        <div class="cl-icon">🐙</div>
+        <div><div class="cl-label">GitHub</div><div class="cl-val">github.com/raxx21</div></div>
+      </a>
+      <div class="con-link">
+        <div class="cl-icon">📍</div>
+        <div><div class="cl-label">Location</div><div class="cl-val">Kudal, Sindhudurg, Maharashtra</div></div>
+      </div>
+      <div class="con-link">
+        <div class="cl-icon">⚡</div>
+        <div><div class="cl-label">Response Time</div><div class="cl-val">Within 2 hours</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="reveal-r">
+    <div class="con-form">
+      <div class="cf-title">Send an Enquiry</div>
+      <div class="cf2">
+        <div class="cfg"><label>Your Name</label><input type="text" id="cn" placeholder="Full name"></div>
+        <div class="cfg"><label>Phone</label><input type="tel" id="cp" placeholder="+91 98765 43210"></div>
+      </div>
+      <div class="cfg"><label>Business Type</label>
+        <select id="ct">
+          <option value="">Select your business...</option>
+          <option>Hotel / Resort</option>
+          <option>Restaurant / Cafe</option>
+          <option>Medical / Clinic</option>
+          <option>Retail Shop</option>
+          <option>Other Business</option>
+        </select>
+      </div>
+      <div class="cfg"><label>Budget</label>
+        <select id="cb">
+          <option value="">Select budget...</option>
+          <option>Basic — ₹6,000</option>
+          <option>Standard — ₹9,000</option>
+          <option>Premium — ₹14,000</option>
+          <option>Not sure yet</option>
+        </select>
+      </div>
+      <div class="cfg"><label>Message</label><textarea id="cm" placeholder="Tell me about your business and what you need..."></textarea></div>
+      <button class="cf-btn" onclick="sendEnquiry()">SEND ENQUIRY VIA WHATSAPP →</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="ft-logo">vikram<em>.dev</em></div>
+  <div class="ft-links">
+    <a href="#about">About</a>
+    <a href="#projects">Work</a>
+    <a href="#services">Services</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <div class="ft-copy">© 2025 Vikram Patel · Kudal</div>
+</footer>
+
+<script>
+// Cursor
+const cur=document.getElementById('cursor'),ring=document.getElementById('ring');
+document.addEventListener('mousemove',e=>{
+  cur.style.left=e.clientX+'px';cur.style.top=e.clientY+'px';
+  setTimeout(()=>{ring.style.left=e.clientX+'px';ring.style.top=e.clientY+'px'},80)
+});
+document.querySelectorAll('a,button,.proj-item,.svc,.price-card').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cur.style.transform='translate(-50%,-50%) scale(2.5)';ring.style.opacity='0'});
+  el.addEventListener('mouseleave',()=>{cur.style.transform='translate(-50%,-50%) scale(1)';ring.style.opacity='1'})
+});
+
+// Nav scroll
+window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('scrolled',window.scrollY>60));
+
+// Scroll reveal
+const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('visible');obs.unobserve(x.target)}})},{threshold:0.07});
+document.querySelectorAll('.reveal,.reveal-l,.reveal-r').forEach(el=>obs.observe(el));
+setTimeout(()=>{document.querySelectorAll('.reveal,.reveal-l,.reveal-r').forEach(el=>{if(el.getBoundingClientRect().top<window.innerHeight)el.classList.add('visible')})},100);
+
+// Enquire
+function enquire(pkg){window.open(`https://wa.me/919404830921?text=${encodeURIComponent(`Hi Vikram! I'm interested in your *${pkg}*.\n\nCan we discuss my website project?`)}`, '_blank')}
+
+// Contact form
+function sendEnquiry(){
+  const n=document.getElementById('cn').value.trim(),p=document.getElementById('cp').value.trim(),t=document.getElementById('ct').value,b=document.getElementById('cb').value,m=document.getElementById('cm').value.trim();
+  if(!n||!p){alert('Please enter your name and phone.');return}
+  window.open(`https://wa.me/919404830921?text=${encodeURIComponent(`💼 Website Enquiry\n\n👤 Name: ${n}\n📞 Phone: ${p}\n🏢 Business: ${t||'Not specified'}\n💰 Budget: ${b||'Not specified'}\n📝 Message: ${m||'Interested in a website!'}`)}`, '_blank')
+}
+</script>
+</body>
+</html>
